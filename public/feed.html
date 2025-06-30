@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Donation Feed</title></head>
+<body>
+  <h1>Donation Alerts</h1>
+  <ul id="feed"></ul>
+  <script>
+    const username = location.pathname.split('/')[1];
+    const ws = new WebSocket(`ws://${location.host}?username=${username}`);
+    ws.onmessage = evt => {
+      const data = JSON.parse(evt.data);
+      const li = document.createElement('li');
+      li.textContent = `${data.user} donated ${data.amount}: ${data.message}`;
+      document.getElementById('feed').appendChild(li);
+    };
+  </script>
+</body>
+</html>

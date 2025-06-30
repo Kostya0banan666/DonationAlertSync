@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Settings</title></head>
+<body>
+  <h1>Alert Settings</h1>
+  <form id="form">
+    <label>Color: <input name="color" type="color"></label><br>
+    <label>Layout: <input name="layout"></label><br>
+    <label>Sound URL: <input name="sound"></label><br>
+    <button type="submit">Save</button>
+  </form>
+  <script>
+    fetch('/api/user').then(r=>r.json()).then(data => {
+      document.querySelector('[name=color]').value = data.settings.color;
+      document.querySelector('[name=layout]').value = data.settings.layout;
+      document.querySelector('[name=sound]').value = data.settings.sound;
+    });
+    document.getElementById('form').onsubmit = e => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      fetch('/settings', { method:'POST', body: new URLSearchParams(fd) }).then(()=>alert('Saved'));
+    };
+  </script>
+</body>
+</html>
