@@ -6,10 +6,10 @@
   <div id="stats"></div>
   <div id="apikey"></div>
   <button id="copy">Copy key</button>
-  <p><a href="/settings">Settings</a></p>
+  <p><a href="/settings">Settings</a> | <a href="/logout">Logout</a></p>
   <script>
     fetch('/api/user').then(r => r.json()).then(data => {
-      document.getElementById('stats').innerText = 'Total donations: ' + data.total + (data.last ? '\nLast: ' + data.last.amount + ' from ' + data.last.user : '');
+      document.getElementById('stats').innerText = 'Total donations: ' + data.total + '\nCount: ' + data.count + (data.last ? '\nLast: ' + data.last.amount + ' from ' + data.last.user : '');
       document.getElementById('apikey').innerText = 'API Key: ' + data.apiKey;
       document.getElementById('copy').onclick = () => navigator.clipboard.writeText(data.apiKey);
     });

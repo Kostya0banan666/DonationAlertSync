@@ -77,13 +77,20 @@ app.post('/login', (req, res) => {
   res.redirect('/home');
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+});
+
 app.get('/api/user', requireAuth, (req, res) => {
   const user = users.users.find(u => u.id === req.session.userId);
   if (!user) return res.status(401).end();
   const donations = logs.donations.filter(d => d.username === user.username);
+  const count = donations.length;
   const total = donations.reduce((s, d) => s + Number(d.amount || 0), 0);
   const last = donations[donations.length - 1] || null;
-  res.json({ username: user.username, apiKey: user.apiKey, total, last, settings: user.settings });
+  res.json({ username: user.username, apiKey: user.apiKey, total, last, count, settings: user.settings });
 });
 
 app.get('/home', requireAuth, (req, res) => {
